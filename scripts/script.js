@@ -26,7 +26,7 @@ products.forEach((product) => {
 
               <div class="product-quantity-container">
                 <select class="js-quantity-selector-${product.id}">
-                  <option selected value="1">1</option>
+                  <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
                   <option value="4">4</option>
@@ -41,7 +41,7 @@ products.forEach((product) => {
 
               <div class="product-spacer"></div>
 
-              <div class="added-to-cart ">
+              <div class="added-to-cart display-${product.id}">
                 <img src="images/icons/checkmark.png">
                 Added
               </div>
@@ -63,36 +63,49 @@ products.forEach((product) => {
     
 
  document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+
     button.addEventListener("click", () => {
      const productId = button.dataset.productId;
+
+     const Selector = document.querySelector(`.js-quantity-selector-${productId}`);
+  
      cart.forEach((Item) => {
        if (productId === Item.productId) {
          matchingitem = Item;
        }
      });
         if(matchingitem){
-             matchingitem.quantity++;
-        } else{
-           cart.push ({
-        productId: productId,
-        quantity: 1
-     });
+             matchingitem.quantity += Number(Selector.value);
         }
+         else{
+                      const { value } = Selector; // Destructure the value from Selector  
+              cart.push({  
+                  productId,  
+                  quantity: Number(value),  
+              }); 
+        }
+
      let cartQuantity = 0;
-        cart.forEach((Item) => {
-          cartQuantity += Item.quantity;
-        });
-     
+       cart.forEach((Item) => {
+          cartQuantity += Item.quantity; 
 
-        cartNumber.innerHTML =+ cartQuantity;
-                            
-    });
+        }); 
+
+        cartNumber.innerHTML = cartQuantity;
+     let display = document.querySelector(`.display-${productId}`);
+      display.classList.add("added")
+      setTimeout(() => {
+        display.classList.remove("added")
+      }, 1000);
+      
+    });  //button end
     
-        
-    
+
 });
+      
 
-   
+
+
 
                                                   
        
